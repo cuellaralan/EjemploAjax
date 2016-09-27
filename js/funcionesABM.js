@@ -1,7 +1,25 @@
-function BorrarCD(idParametro)
+function BorrarCD(idParametro)//editado
 {
+	
+	$.ajax({
+		url:"nexo.php",
+		type:"post",
+		data:{
+			queHacer:"BorrarCD",
+			id:idParametro
+			}	
+		})
+	.then(function exito(retorno){
+		Mostrar("MostrarGrilla");
+		$("#informe").html("cantidad de eliminados "+ retorno);	
+	},function error(retorno){
+		$("#informe").html(retorno.responseText);
+	});
+
+
+
 	//alert(idParametro);
-		var funcionAjax=$.ajax({
+		/*var funcionAjax=$.ajax({
 		url:"nexo.php",
 		type:"post",
 		data:{
@@ -16,12 +34,35 @@ function BorrarCD(idParametro)
 	});
 	funcionAjax.fail(function(retorno){	
 		$("#informe").html(retorno.responseText);	
-	});	
+	});	*/
 }
 
-function EditarCD(idParametro)
+function EditarCD(idParametro)//editado
 {
-	var funcionAjax=$.ajax({
+	
+	$.ajax({
+		url:"nexo.php",
+		type:"post",
+		data:{
+			queHacer:"TraerCD",
+			id:idParametro	
+		}
+	}).then(function exito(retorno){
+		Mostrar("MostrarFormAlta");
+		window.setTimeout(function(){
+			var cd =JSON.parse(retorno);	
+			$("#idCD").val(cd.id);
+			$("#cantante").val(cd.cantante);
+			$("#titulo").val(cd.titulo);
+			$("#anio").val(cd.año);
+			}, 5000);
+	},function error(retorno){
+		$("#informe").html(retorno.responseText);	
+	});
+
+
+
+	/*var funcionAjax=$.ajax({
 		url:"nexo.php",
 		type:"post",
 		data:{
@@ -43,11 +84,11 @@ function EditarCD(idParametro)
 	});
 	funcionAjax.fail(function(retorno){	
 		$("#informe").html(retorno.responseText);	
-	});
+	});*/
 	
 }
 
-function GuardarCD()
+function GuardarCD()//editado
 {
 	var id=$("#idCD").val();
 	var cantante=$("#cantante").val();
@@ -71,30 +112,5 @@ function GuardarCD()
 	},function error(retorno){
 		$("#informe").html(retorno.responseText);	
 	});
-
-
-	/*	var id=$("#idCD").val();
-		var cantante=$("#cantante").val();
-		var titulo=$("#titulo").val();
-		var anio=$("#anio").val();
-
-		var funcionAjax=$.ajax({
-		url:"nexo.php",
-		type:"post",
-		data:{
-			queHacer:"GuardarCD",
-			id:id,
-			cantante:cantante,
-			titulo:titulo,
-			anio:anio	
-		}
-	});
-	funcionAjax.done(function(retorno){
-			Mostrar("MostrarGrilla");
-		$("#informe").html("cantidad de agregados "+ retorno);	
-		
-	});
-	funcionAjax.fail(function(retorno){	
-		$("#informe").html(retorno.responseText);	
-	});*/	
+	
 }

@@ -1,8 +1,9 @@
 
-function MostrarError()
+function MostrarError()//editado
 {
-	$.ajax({url:"nexoNoExiste.php"}).then( function(datos){
-	alert("primero");
+	$.ajax({url:"nexoNoExiste.php"})
+	.then( function(datos){
+		alert("primero");
 	},function(error){
 		console.info("objeto respuesta",error);
 		alert("segundo"+error);
@@ -10,14 +11,6 @@ function MostrarError()
 
 
 	});
-
-
-
-
-
-
-
-
 
 	/*
 	var funcionAjax=$.ajax({url:"nexoNoExiste.php",type:"post",data:{queHacer:"MostrarTexto"}});
@@ -35,10 +28,12 @@ function MostrarError()
 
 	
 }
-function MostrarSinParametros()
+function MostrarSinParametros() //editado
 {//"nexoTexto.php"
 	
-	$.ajax({url:"nexoTexto.php"}).then(function ok(respuesta){
+	$.ajax({
+		url:"nexoTexto.php"})
+	.then(function ok(respuesta){
 		//alert(respuesta);
 		$("#principal").html(respuesta);
 
@@ -50,18 +45,19 @@ function MostrarSinParametros()
 
 }
 
-function Mostrar(queMostrar)
+function Mostrar(queMostrar) //editado
 {
 
 
 	$.ajax({ url:"nexo.php",type:"post",data:{queHacer:queMostrar}})
 	.then(function(exito){
-		console.log(exito,"exito");
+		//console.log(exito,"exito");
 		$("#principal").html(exito);
+		$("#informe").html("Correcto!!!");
 	},function(error){
 		console.log(error,"error");
 		$("#principal").html(error);
-
+		$("#informe").html(error.responseText);
 	});
 
 
@@ -86,10 +82,24 @@ function Mostrar(queMostrar)
 	
 }
 
-function MostarLogin()
+function MostarLogin()//editado
 {
+	
+	$.ajax({
+		url:"nexo.php",
+		type:"post",
+		data:{queHacer:"MostarLogin"}
+	}).then(function exito(retorno){
+		$("#principal").html(retorno);
+		$("#informe").html("Correcto Form login!!!");
+	},function error(retorno){
+		$("#botonesABM").html(":(");
+		$("#informe").html(retorno.responseText);
+	});
+
+
 		//alert(queMostrar);
-	var funcionAjax=$.ajax({
+	/*var funcionAjax=$.ajax({
 		url:"nexo.php",
 		type:"post",
 		data:{queHacer:"MostarLogin"}
@@ -105,5 +115,5 @@ function MostarLogin()
 	funcionAjax.always(function(retorno){
 		//alert("siempre "+retorno.statusText);
 
-	});
+	});*/
 }

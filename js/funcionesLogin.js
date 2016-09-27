@@ -7,6 +7,33 @@ function validarLogin()
 $("#informe").html("<img src='imagenes/ajax-loader.gif' style='width: 30px;'/>");
 	
 
+	$.ajax({
+		url:"php/validarUsuario.php",
+		type:"post",
+		data:{
+			recordarme:recordar,
+			usuario:varUsuario,
+			clave:varClave
+		}
+	}).then(function exito(){
+		if(retorno!="No-esta"){	
+				MostarBotones();
+				MostarLogin();
+
+				$("#BotonLogin").html("Ir a salir<br>-Sesión-");
+				$("#BotonLogin").addClass("btn btn-danger");				
+				$("#usuario").val("usuario: "+retorno);
+			}else
+			{
+				$("#informe").html("usuario o clave incorrecta");	
+				$("#formLogin").addClass("animated bounceInLeft");
+			}
+	}, function error(){
+		$("#botonesABM").html(":(");
+		$("#informe").html(retorno.responseText);
+	});
+
+/*
 	var funcionAjax=$.ajax({
 		url:"php/validarUsuario.php",
 		type:"post",
@@ -36,12 +63,28 @@ $("#informe").html("<img src='imagenes/ajax-loader.gif' style='width: 30px;'/>")
 	funcionAjax.fail(function(retorno){
 		$("#botonesABM").html(":(");
 		$("#informe").html(retorno.responseText);	
-	});
+	});*/
 	
 }
-function deslogear()
+function deslogear() //editado
 {	
-	var funcionAjax=$.ajax({
+
+	$.ajax({
+		url:"php/deslogearUsuario.php",
+		type:"post"
+	}).then(function exito(){
+		MostarBotones();
+		MostarLogin();
+		$("#usuario").val("Sin usuario.");
+		$("#BotonLogin").html("Login<br>-Sesión-");
+		$("#BotonLogin").removeClass("btn-danger");
+		$("#BotonLogin").addClass("btn-primary");
+	}, function error(){
+			alert("error");
+	});
+
+
+	/*var funcionAjax=$.ajax({
 		url:"php/deslogearUsuario.php",
 		type:"post"		
 	});
@@ -53,10 +96,24 @@ function deslogear()
 			$("#BotonLogin").removeClass("btn-danger");
 			$("#BotonLogin").addClass("btn-primary");
 			
-	});	
+	});*/	
 }
-function MostarBotones()
+
+
+function MostarBotones()//editado
 {		//alert(queMostrar);
+
+	$.ajax({
+		url:"nexo.php",
+		type:"post",
+		data:{queHacer:"MostarBotones"}
+	}).then(function exito(){
+		$("#botonesABM").html(retorno);
+		//$("#informe").html("Correcto BOTONES!!!");
+	}, function error(){
+		alert("error");
+	});
+	/*
 	var funcionAjax=$.ajax({
 		url:"nexo.php",
 		type:"post",
@@ -65,5 +122,5 @@ function MostarBotones()
 	funcionAjax.done(function(retorno){
 		$("#botonesABM").html(retorno);
 		//$("#informe").html("Correcto BOTONES!!!");	
-	});
+	});*/
 }
