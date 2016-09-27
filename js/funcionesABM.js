@@ -49,7 +49,31 @@ function EditarCD(idParametro)
 
 function GuardarCD()
 {
-		var id=$("#idCD").val();
+	var id=$("#idCD").val();
+	var cantante=$("#cantante").val();
+	var titulo=$("#titulo").val();
+	var anio=$("#anio").val();
+
+	$.ajax({
+		url:"nexo.php",
+		type:"post",
+		data:{
+			queHacer:"GuardarCD",
+			id:id,
+			cantante:cantante,
+			titulo:titulo,
+			anio:anio	
+		}
+	})
+	.then(function exito(retorno){
+		Mostrar("MostrarGrilla");
+		$("#informe").html("cantidad de agregados "+ retorno);
+	},function error(retorno){
+		$("#informe").html(retorno.responseText);	
+	});
+
+
+	/*	var id=$("#idCD").val();
 		var cantante=$("#cantante").val();
 		var titulo=$("#titulo").val();
 		var anio=$("#anio").val();
@@ -72,5 +96,5 @@ function GuardarCD()
 	});
 	funcionAjax.fail(function(retorno){	
 		$("#informe").html(retorno.responseText);	
-	});	
+	});*/	
 }
